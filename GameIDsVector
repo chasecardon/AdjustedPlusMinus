@@ -1,0 +1,232 @@
+```{r}
+
+library(xml2)
+library(rvest)
+library(dplyr)
+```
+
+
+#2019 season
+
+```{r}
+minids <- read_html("https://www.espn.com/wnba/team/schedule/_/name/min/season/2019")
+
+minids <- minids %>% 
+  html_nodes(".ml4") %>%
+  html_nodes("a") %>%
+  html_attr("href")
+#1 Postseason game, 34 regular season game, 2 preseason games
+
+nchar(minids)
+
+minids <- as.numeric(substr(minids, 40, 48))
+
+
+#all teams played 2 preseason games, always the last two in list of game ids
+minids <- minids[1:(length(minids)-2)]
+
+```
+
+```{r}
+atlids <- read_html("https://www.espn.com/wnba/team/schedule/_/name/atl/season/2019")
+
+atlids <- atlids %>% 
+  html_nodes(".ml4") %>%
+  html_nodes("a") %>%
+  html_attr("href")
+#1 Postseason game, 34 regular season game, 2 preseason games
+
+nchar(atlids)
+
+atlids <- as.numeric(substr(atlids, 40, 48))
+
+#all teams played 2 preseason games, always the last two in list of game ids
+atlids <- atlids[1:(length(atlids)-2)]
+
+```
+
+```{r}
+chiids <- read_html("https://www.espn.com/wnba/team/schedule/_/name/chi/season/2019")
+
+chiids <- chiids %>% 
+  html_nodes(".ml4") %>%
+  html_nodes("a") %>%
+  html_attr("href")
+#1 Postseason game, 34 regular season game, 2 preseason games
+
+nchar(chiids)
+
+chiids <- as.numeric(substr(chiids, 40, 48))
+
+#all teams played 2 preseason games, always the last two in list of game ids
+chiids <- chiids[1:(length(chiids)-2)]
+
+```
+
+```{r}
+connids <- read_html("https://www.espn.com/wnba/team/schedule/_/name/conn/season/2019")
+
+connids <- connids %>% 
+  html_nodes(".ml4") %>%
+  html_nodes("a") %>%
+  html_attr("href")
+#1 Postseason game, 34 regular season game, 2 preseason games
+
+nchar(connids)
+
+connids <- as.numeric(substr(connids, 40, 48))
+
+#all teams played 2 preseason games, always the last two in list of game ids
+connids <- connids[1:(length(connids)-2)]
+
+```
+
+```{r}
+indids <- read_html("https://www.espn.com/wnba/team/schedule/_/name/ind/season/2019")
+
+indids <- indids %>% 
+  html_nodes(".ml4") %>%
+  html_nodes("a") %>%
+  html_attr("href")
+#1 Postseason game, 34 regular season game, 2 preseason games
+
+nchar(indids)
+
+indids <- as.numeric(substr(indids, 40, 48))
+
+#all teams played 2 preseason games, always the last two in list of game ids
+indids <- indids[1:(length(indids)-2)]
+
+```
+
+```{r}
+nyids <- read_html("https://www.espn.com/wnba/team/schedule/_/name/ny/season/2019")
+
+nyids <- nyids %>% 
+  html_nodes(".ml4") %>%
+  html_nodes("a") %>%
+  html_attr("href")
+#1 Postseason game, 34 regular season game, 2 preseason games
+
+nchar(nyids)
+
+nyids <- as.numeric(substr(nyids, 40, 48))
+
+#all teams played 2 preseason games, always the last two in list of game ids
+nyids <- nyids[1:(length(nyids)-2)]
+
+```
+
+```{r}
+wshids <- read_html("https://www.espn.com/wnba/team/schedule/_/name/wsh/season/2019")
+
+wshids <- wshids %>% 
+  html_nodes(".ml4") %>%
+  html_nodes("a") %>%
+  html_attr("href")
+#1 Postseason game, 34 regular season game, 2 preseason games
+
+nchar(wshids)
+
+wshids <- as.numeric(substr(wshids, 40, 48))
+
+#all teams played 2 preseason games, always the last two in list of game ids
+wshids <- wshids[1:(length(wshids)-2)]
+
+```
+
+```{r}
+phxids <- read_html("https://www.espn.com/wnba/team/schedule/_/name/phx/season/2019")
+
+phxids <- phxids %>% 
+  html_nodes(".ml4") %>%
+  html_nodes("a") %>%
+  html_attr("href")
+#1 Postseason game, 34 regular season game, 2 preseason games
+
+nchar(phxids)
+
+phxids <- as.numeric(substr(phxids, 40, 48))
+
+#all teams played 2 preseason games, always the last two in list of game ids
+phxids <- phxids[1:(length(phxids)-2)]
+
+```
+
+```{r}
+lvids <- read_html("https://www.espn.com/wnba/team/schedule/_/name/lv/season/2019")
+
+lvids <- lvids %>% 
+  html_nodes(".ml4") %>%
+  html_nodes("a") %>%
+  html_attr("href")
+#1 Postseason game, 34 regular season game, 2 preseason games
+
+nchar(lvids)
+
+lvids <- as.numeric(substr(lvids, 40, 48))
+
+#all teams played 2 preseason games, always the last two in list of game ids
+lvids <- lvids[1:(length(lvids)-2)]
+
+```
+
+```{r}
+dalids <- read_html("https://www.espn.com/wnba/team/schedule/_/name/dal/season/2019")
+
+dalids <- dalids %>% 
+  html_nodes(".ml4") %>%
+  html_nodes("a") %>%
+  html_attr("href")
+#1 Postseason game, 34 regular season game, 2 preseason games
+
+nchar(dalids)
+
+dalids <- as.numeric(substr(dalids, 40, 48))
+
+#all teams played 2 preseason games, always the last two in list of game ids
+dalids <- dalids[1:(length(dalids)-2)]
+
+```
+
+```{r}
+laids <- read_html("https://www.espn.com/wnba/team/schedule/_/name/la/season/2019")
+
+laids <- laids %>% 
+  html_nodes(".ml4") %>%
+  html_nodes("a") %>%
+  html_attr("href")
+#1 Postseason game, 34 regular season game, 2 preseason games
+
+nchar(laids)
+
+laids <- as.numeric(substr(laids, 40, 48))
+
+#all teams played 2 preseason games, always the last two in list of game ids
+laids <- laids[1:(length(laids)-2)]
+
+```
+
+```{r}
+seaids <- read_html("https://www.espn.com/wnba/team/schedule/_/name/sea/season/2019")
+
+seaids <- seaids %>% 
+  html_nodes(".ml4") %>%
+  html_nodes("a") %>%
+  html_attr("href")
+#1 Postseason game, 34 regular season game, 2 preseason games
+
+nchar(seaids)
+
+seaids <- as.numeric(substr(seaids, 40, 48))
+
+#all teams played 2 preseason games, always the last two in list of game ids
+seaids <- seaids[1:(length(seaids)-2)]
+
+```
+
+```{r}
+allids <- c(minids, atlids, chiids, connids, indids, nyids, wshids, phxids, lvids, dalids, laids, seaids)
+allids <- unique(allids)
+#all game ids in the 2019 season (still should try to figure out how to differentiate between regular season and postseason)
+```
