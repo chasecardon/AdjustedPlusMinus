@@ -1,0 +1,100 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+#Dataframe player stats for one example game
+
+```{r}
+
+
+#https://www.espn.com/wnba/boxscore/_/gameId/ (game id)
+
+
+
+
+gamestats <- read_html("https://www.espn.com/wnba/boxscore/_/gameId/401104930")
+
+gamestats <- gamestats %>% html_table(fill = TRUE)
+gamestats1 <- gamestats[[2]]
+gamestats2 <- gamestats[[3]]
+
+gamestats1 <- as.data.frame(gamestats1)
+gamestats2 <- as.data.frame(gamestats2)
+
+#proper names
+names(gamestats1) <- c("Player", "Mins", "FGs", "ThreePoint", "FT", "OReb", "DReb", "Rebounds", "Assists", "Steals", "Blocks", "Turnovers", "Fouls", "PlusMinus", "Points")
+names(gamestats2) <- c("Player", "Mins", "FGs", "ThreePoint", "FT", "OReb", "DReb", "Rebounds", "Assists", "Steals", "Blocks", "Turnovers", "Fouls", "PlusMinus", "Points")
+
+#only show players that played
+gamestats1 <- gamestats1[!is.na(as.numeric(gamestats1$Mins)),]
+gamestats2 <- gamestats2[!is.na(as.numeric(gamestats2$Mins)),]
+
+#different columns for free throw attempts and makes
+FT1 <- data.frame(t(matrix(unlist(strsplit(as.vector(gamestats1$FT), split = "-")), ncol = length(gamestats1$FT), nrow = 2)))
+FT2 <- data.frame(t(matrix(unlist(strsplit(as.vector(gamestats2$FT), split = "-")), ncol = length(gamestats2$FT), nrow = 2)))
+names(FT1) <- c("FTM", "FTA")
+gamestats1 <- cbind(gamestats1, FT1)
+gamestats1$FT <- NULL
+names(FT2) <- c("FTM", "FTA")
+gamestats2 <- cbind(gamestats2, FT2)
+gamestats2$FT <- NULL
+
+#different columns for three point attempts and makes
+threeP1 <- data.frame(t(matrix(unlist(strsplit(as.vector(gamestats1$ThreePoint), split = "-")), ncol = length(gamestats1$ThreePoint), nrow = 2)))
+names(threeP1) <- c("ThreePM", "ThreePA")
+gamestats1 <- cbind(gamestats1, threeP1)
+gamestats1$ThreePoint <- NULL
+threeP2 <- data.frame(t(matrix(unlist(strsplit(as.vector(gamestats2$ThreePoint), split = "-")), ncol = length(gamestats2$ThreePoint), nrow = 2)))
+names(threeP2) <- c("ThreePM", "ThreePA")
+gamestats2 <- cbind(gamestats2, threeP2)
+gamestats2$ThreePoint <- NULL
+
+#different columns for ield goal attempts and makes
+FG1 <- data.frame(t(matrix(unlist(strsplit(as.vector(gamestats1$FGs), split = "-")), ncol = length(gamestats1$FGs), nrow = 2)))
+names(FG1) <- c("FGM", "FGA")
+gamestats1 <- cbind(gamestats1, FG1)
+gamestats1$FGs <- NULL
+FG2 <- data.frame(t(matrix(unlist(strsplit(as.vector(gamestats2$FGs), split = "-")), ncol = length(gamestats2$FGs), nrow = 2)))
+names(FG2) <- c("FGM", "FGA")
+gamestats2 <- cbind(gamestats2, FG2)
+gamestats2$FGs <- NULL
+
+#player positions
+gamestats1$position <- substr(gamestats1$Player, nchar(gamestats1$Player), nchar(gamestats1$Player))
+gamestats2$position <- substr(gamestats2$Player, nchar(gamestats2$Player), nchar(gamestats2$Player))
+
+#player first initial and last name
+gamestats1$FName <- substr(gamestats1$Player, 1, 1)
+gamestats2$FName <- substr(gamestats2$Player, 1, 1)
+gamestats1$LName <- substr(gamestats1$Player, 4, (nchar(gamestats1$Player) - 1) / 2)
+gamestats2$LName <- substr(gamestats2$Player, 4, (nchar(gamestats2$Player) - 1) / 2)
+gamestats1$Player <-NULL
+gamestats2$Player <-NULL
+
+#starters/off the bench
+gamestats1$starter <- c(1,1,1,1,1, rep(0, length(gamestats1$FName) - 5))
+gamestats2$starter <- c(1,1,1,1,1, rep(0, length(gamestats2$FName) - 5))
+
+#home/away
+gamestats1$location <- c(rep("away", length(gamestats1$FName)))
+gamestats2$location <- c(rep("home", length(gamestats2$FName)))
+
+#team name
+gamestats2$team <- rep(as.character(gamestats[[1]][2,1]), length(gamestats2$FName))
+gamestats1$team <- rep(as.character(gamestats[[1]][1,1]), length(gamestats1$FName))
+
+#game result
+gamestats1$result <- rep(as.vector(ifelse(gamestats[[1]][1, "T"] - gamestats[[1]][2, "T"] > 0, "win", "loss")), length(gamestats1$FName))
+gamestats2$result <- rep(as.vector(ifelse(gamestats[[1]][2, "T"] - gamestats[[1]][1, "T"] > 0, "win", "loss")), length(gamestats2$FName))
+
+
+
+#combine in one big dataframe
+gamestats <- rbind(gamestats1, gamestats2)
+gamestats <- gamestats[,c(19, 20, 18, 21, 23, 22, 24, 10, 1, 11, 16, 17, 12, 13, 14, 15, 4, 2, 3, 5, 6, 7, 8, 9)]
+
+#make columns numeric as appropriate
+#make plus minus work
+```
+
